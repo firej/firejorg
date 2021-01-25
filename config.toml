@@ -1,0 +1,23 @@
+baseURL = "https://firej.org/"
+languageCode = "ru-ru"
+title = "firej.org"
+theme = "m10c"
+
+[[menu.main]]
+  identifier = "tags"
+  name = "Tags"
+  url = "/tags/"
+
+[params]
+  author = "Evgeny Bogdanov"
+  description = "firej's blog."
+
+[[params.social]]
+  name = "github"
+  url = "https://github.com/firej"
+[[params.social]]
+  name = "twitter"
+  url = "https://twitter.com/firejvlz"
+[[params.social]]
+  name = "instagram"
+  url = "https://instagram.com/firejvlz"
