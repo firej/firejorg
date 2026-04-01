@@ -6,6 +6,9 @@ theme = "m10c"
 paginate = 10
 
 [markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
   [markup.highlight]
     noClasses = false
     lineNos = false
@@ -21,15 +24,19 @@ paginate = 10
   description = "Блог о технологиях, умном доме и автоматизации"
 
 [[params.social]]
+  icon = "github"
   name = "github"
   url = "https://github.com/firej"
 [[params.social]]
+  icon = "twitter"
   name = "twitter"
   url = "https://twitter.com/firejvlz"
 [[params.social]]
+  icon = "instagram"
   name = "instagram"
   url = "https://instagram.com/firejvlz"
 [[params.social]]
+  icon = "brand-telegram"
   name = "telegram"
   url = "https://t.me/iamfirej"
 
