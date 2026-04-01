@@ -8,7 +8,7 @@ date: 2021-01-24T17:59:43Z
 Качаем релиз frp, складываем все, например, в `/opt/frp`.
 Конфиг клиента `frpc.ini`:
 
-```
+```ini
 [common]
 server_addr = your.frp.server.org
 server_port = 7000
@@ -32,7 +32,7 @@ use_compression = true
 
 Дальше конфиг сервера, он весьма похож `frps.ini`:
 
-```
+```ini
 [common]
 bind_port = 7000
 token = {{server token}}
@@ -47,7 +47,7 @@ dashboard_pwd = admin
 
 Теперь чтобы они запускали сами как сервисы, сделаем конфиги systemd:
 
-```
+```ini
 # cat /etc/systemd/system/frp.server.service
 [Unit]
 Description=frp server service
@@ -64,7 +64,7 @@ WantedBy=multi-user.target
 
 Включаем и запускаем сервисы (аналогично для клиента)
 
-```
+```bash
 sudo systemctl enable frp.server.service
 sudo systemctl start frp.server.service
 sudo systemctl status frp.server.service
@@ -72,7 +72,7 @@ sudo systemctl status frp.server.service
 
 Вишенкой на торте - доступ к home assistant по нормальному dns имени. Для этого можно использовать nginx (он все равно там уже стоял).
 
-```
+```nginx
 # cat /etc/nginx/sites-enabled/your.ha.server.org.conf
 upstream serverorg_haproxy {
     server 127.0.0.1:10000;
@@ -89,4 +89,3 @@ server {
 ```
 
 Ну и можно закрыть доступ мимо nginx'а, но пока мне это не требовалось.
-
