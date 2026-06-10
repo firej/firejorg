@@ -398,14 +398,13 @@ main.container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin: 40px 0 0;
   font-family: "JetBrains Mono", monospace;
   font-size: 13px;
 }
 
-.pagination a,
-.pagination span {
+.pager {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -417,17 +416,23 @@ main.container {
   color: var(--soft);
   border: 1px solid var(--line);
   transition: color .15s, border-color .15s, background .15s;
+  line-height: 1;
 }
 
-.pagination a:hover {
+a.pager:hover {
   color: var(--terra);
   border-color: var(--terra);
 }
 
-.pagination .active {
+.pager-active {
   background: var(--terra);
   color: #fff;
   border-color: var(--terra);
+}
+
+.pager-off {
+  opacity: 0.3;
+  cursor: default;
 }
 
 /* ---- single post ---- */
