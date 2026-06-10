@@ -27,7 +27,7 @@ params:
 
   home:
     showRecent: true
-    recentLimit: 5
+    recentLimit: 10
 
   footer:
     showCopyright: true
