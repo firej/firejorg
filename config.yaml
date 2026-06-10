@@ -25,7 +25,8 @@ params:
     headline: Блог о технологиях, умном доме и автоматизации
     bio: Разработчик, увлекаюсь умным домом и автоматизацией
 
-  home:
+  homepage:
+    layout: page
     showRecent: true
     recentLimit: 10
 
