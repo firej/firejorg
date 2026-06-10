@@ -1,0 +1,41 @@
+{{ define "main" }}
+<article>
+  <a href="{{ "/" | absURL }}" class="post-back">← все записи</a>
+
+  <header class="post-header">
+    <div class="card-meta">
+      {{ with index .Params.tags 0 }}<span class="kicker">{{ . }}</span>{{ end }}
+      <span class="meta">{{ .Date.Format "02.01.2006" }} · {{ .ReadingTime }} мин</span>
+    </div>
+    <h1>{{ .Title }}</h1>
+  </header>
+
+  {{- /* Cover image */ -}}
+  {{ with .Params.featured_image }}
+    {{ $res := $.Resources.GetMatch . }}
+    {{ if $res }}
+    <div class="post-cover">
+      <img src="{{ $res.RelPermalink }}" alt="{{ $.Title }}">
+    </div>
+    {{ else }}
+    <div class="post-cover">
+      <img src="{{ . | absURL }}" alt="{{ $.Title }}">
+    </div>
+    {{ end }}
+  {{ end }}
+
+  <div class="post-body">
+    {{ .Content }}
+  </div>
+
+  {{ if .Params.tags }}
+  <div class="post-tags">
+    {{ range .Params.tags }}
+    <a href="{{ "/tags/" | absURL }}{{ . | urlize }}/">{{ . }}</a>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  {{ partial "more-posts.html" . }}
+</article>
+{{ end }}

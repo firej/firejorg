@@ -1,0 +1,22 @@
+{{- /* Card-S: compact list card with optional thumbnail. Expects a Hugo Page as context. */ -}}
+{{ $img := "" }}
+{{ with .Params.featured_image }}
+  {{ $res := $.Resources.GetMatch . }}
+  {{ if $res }}
+    {{ $img = $res.RelPermalink }}
+  {{ else }}
+    {{ $img = . | absURL }}
+  {{ end }}
+{{ end }}
+<a href="{{ .Permalink }}" class="card card-s{{ if and $img .Params.thumb }} has-thumb{{ end }}">
+  {{ if and $img .Params.thumb }}
+  <div class="card-s-thumb">
+    <img src="{{ $img }}" alt="{{ .Title }}" loading="lazy">
+  </div>
+  {{ end }}
+  <div class="card-s-body">
+    {{ with index .Params.tags 0 }}<span class="kicker">{{ . }}</span>{{ end }}
+    <h2>{{ .Title }}</h2>
+  </div>
+  <span class="meta">{{ .Date.Format "02.01.2006" }}</span>
+</a>

@@ -1,7 +1,7 @@
 baseURL = "https://firej.org/"
 languageCode = "ru-ru"
 title = "firej.org"
-theme = "congo"
+theme = "firej"
 
 [author]
   name = "Evgeny Bogdanov"

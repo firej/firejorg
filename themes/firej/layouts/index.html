@@ -1,0 +1,16 @@
+{{ define "main" }}
+<div class="section-label">Свежее</div>
+<div class="post-feed">
+  {{ range .Paginator.Pages }}
+    {{ $size := .Params.size | default "S" }}
+    {{ if eq $size "L" }}
+      {{ partial "card-l.html" . }}
+    {{ else if eq $size "M" }}
+      {{ partial "card-m.html" . }}
+    {{ else }}
+      {{ partial "card-s.html" . }}
+    {{ end }}
+  {{ end }}
+</div>
+{{ template "_internal/pagination.html" . }}
+{{ end }}

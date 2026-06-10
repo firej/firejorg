@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale | default "ru" }}" data-theme="light">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  {{ partial "header.html" . }}
+  <main class="container">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+  <script>
+    function toggleTheme() {
+      var html = document.documentElement;
+      var next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      var btn = document.getElementById('theme-toggle');
+      if (btn) btn.title = next === 'dark' ? 'Светлая тема' : 'Тёмная тема';
+      try { localStorage.setItem('firej-mode', next); } catch(e) {}
+    }
+  </script>
+</body>
+</html>

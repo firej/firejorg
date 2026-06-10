@@ -1,13 +1,7 @@
 baseURL: https://firej.org/
 languageCode: ru-ru
 title: firej.org
-theme: congo
-
-author:
-  name: Evgeny Bogdanov
-  image: img/avatar.png
-  headline: Блог о технологиях, умном доме и автоматизации
-  bio: Разработчик, увлекаюсь умным домом и автоматизацией
+theme: firej
 
 paginate: 10
 
@@ -23,35 +17,19 @@ markup:
 params:
   description: Блог о технологиях, умном доме и автоматизации
 
-  home:
-    showRecent: true
-    recentLimit: 5
+  author:
+    name: Evgeny Bogdanov
+    image: avatar.jpg
 
-  footer:
-    showCopyright: true
-    showThemeAttribution: true
-    showAppearanceSwitcher: true
-
-  list:
-    groupByYear: true
-    dateFormat: 02.01.2006
-
-social:
-  - name: github
-    url: https://github.com/firej
-  - name: twitter
-    url: https://twitter.com/firejvlz
-  - name: instagram
-    url: https://instagram.com/firejvlz
-  - name: telegram
-    url: https://t.me/iamfirej
-
-menu:
-  main:
-    - identifier: tags
-      name: Tags
-      url: /tags/
-      weight: 10
+  social:
+    - name: github
+      url: https://github.com/firej
+    - name: twitter
+      url: https://twitter.com/firejvlz
+    - name: instagram
+      url: https://instagram.com/firejvlz
+    - name: telegram
+      url: https://t.me/iamfirej
 
 sitemap:
   changefreq: monthly

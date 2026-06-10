@@ -1,0 +1,27 @@
+{{- /* Card-L: big feature card with full-width cover. Expects a Hugo Page as context. */ -}}
+{{ $img := "" }}
+{{ with .Params.featured_image }}
+  {{ $res := $.Resources.GetMatch . }}
+  {{ if $res }}
+    {{ $img = $res.RelPermalink }}
+  {{ else }}
+    {{ $img = . | absURL }}
+  {{ end }}
+{{ end }}
+<a href="{{ .Permalink }}" class="card card-l">
+  <div class="card-l-cover">
+    {{ if $img }}
+    <img src="{{ $img }}" alt="{{ .Title }}" loading="lazy">
+    {{ else }}
+    <div class="card-l-cover-ph"></div>
+    {{ end }}
+  </div>
+  <div class="card-l-body">
+    <div class="card-meta">
+      {{ with index .Params.tags 0 }}<span class="kicker">{{ . }}</span>{{ end }}
+      <span class="meta">{{ .Date.Format "02.01.2006" }} · {{ .ReadingTime }} мин</span>
+    </div>
+    <h2>{{ .Title }}</h2>
+    {{ with .Description }}<p class="dek">{{ . }}</p>{{ end }}
+  </div>
+</a>

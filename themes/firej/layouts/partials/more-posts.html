@@ -1,0 +1,21 @@
+{{- /* Shows up to 3 recent posts excluding the current one. Expects a Hugo Page as context. */ -}}
+{{ $others := where .Site.RegularPages "Permalink" "ne" .Permalink | first 3 }}
+{{ if $others }}
+<div class="more-posts">
+  <div class="more-posts-header">
+    <span class="more-posts-label">Ещё записи</span>
+    <div class="more-posts-line"></div>
+  </div>
+  <div class="more-posts-feed">
+    {{ range $others }}
+    <a href="{{ .Permalink }}" class="card card-s" style="padding:16px 22px">
+      <div class="card-s-body">
+        {{ with index .Params.tags 0 }}<span class="kicker">{{ . }}</span>{{ end }}
+        <h3>{{ .Title }}</h3>
+      </div>
+      <span class="meta">{{ .Date.Format "02.01.2006" }}</span>
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

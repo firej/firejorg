@@ -1,0 +1,11 @@
+<footer class="site-footer">
+  <div class="site-footer-line"></div>
+  <div class="site-footer-inner">
+    <span>© {{ now.Year }} {{ .Site.Params.author.name | default .Site.Title }}</span>
+    <div class="site-footer-social">
+      {{- range .Site.Params.social }}
+      <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .name }}</a>
+      {{- end }}
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,5 @@
+name = "firej"
+license = "MIT"
+description = "Personal blog theme for firej.org — warm greige palette, light/dark, card feed"
+homepage = "https://firej.org/"
+min_version = "0.120.0"

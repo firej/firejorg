@@ -1,0 +1,27 @@
+{{- /* Card-M: medium horizontal card with side thumbnail. Expects a Hugo Page as context. */ -}}
+{{ $img := "" }}
+{{ with .Params.featured_image }}
+  {{ $res := $.Resources.GetMatch . }}
+  {{ if $res }}
+    {{ $img = $res.RelPermalink }}
+  {{ else }}
+    {{ $img = . | absURL }}
+  {{ end }}
+{{ end }}
+<a href="{{ .Permalink }}" class="card card-m">
+  <div class="card-m-thumb">
+    {{ if $img }}
+    <img src="{{ $img }}" alt="{{ .Title }}" loading="lazy">
+    {{ else }}
+    <div class="card-m-thumb-ph"></div>
+    {{ end }}
+  </div>
+  <div class="card-m-body">
+    <div class="card-meta">
+      {{ with index .Params.tags 0 }}<span class="kicker">{{ . }}</span>{{ end }}
+      <span class="meta">{{ .Date.Format "02.01.2006" }}</span>
+    </div>
+    <h2>{{ .Title }}</h2>
+    {{ with .Description }}<p class="dek">{{ . }}</p>{{ end }}
+  </div>
+</a>
