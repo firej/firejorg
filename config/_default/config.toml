@@ -1,7 +1,13 @@
 baseURL = "https://firej.org/"
 languageCode = "ru-ru"
 title = "firej.org"
-theme = "m10c"
+theme = "congo"
+
+[author]
+  name = "Evgeny Bogdanov"
+  image = "img/avatar.png"
+  headline = "Блог о технологиях, умном доме и автоматизации"
+  bio = "Разработчик, увлекаюсь умным домом и автоматизацией"
 
 paginate = 10
 
@@ -14,31 +20,42 @@ paginate = 10
     lineNos = false
     guessSyntax = true
 
-[[menu.main]]
-  identifier = "tags"
-  name = "Tags"
-  url = "/tags/"
-
 [params]
-  author = "Evgeny Bogdanov"
   description = "Блог о технологиях, умном доме и автоматизации"
 
+  [params.home]
+    showRecent = true
+    recentLimit = 10
+    showMoreLink = true
+
+  [params.footer]
+    showCopyright = true
+    showThemeAttribution = true
+    showAppearanceSwitcher = true
+
+  [params.list]
+    groupByYear = true
+    dateFormat = "02.01.2006"
+
 [[params.social]]
-  icon = "github"
   name = "github"
   url = "https://github.com/firej"
 [[params.social]]
-  icon = "twitter"
   name = "twitter"
   url = "https://twitter.com/firejvlz"
 [[params.social]]
-  icon = "instagram"
   name = "instagram"
   url = "https://instagram.com/firejvlz"
 [[params.social]]
-  icon = "brand-telegram"
   name = "telegram"
   url = "https://t.me/iamfirej"
+
+[menu]
+  [[menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "/tags/"
+    weight = 10
 
 [sitemap]
   changefreq = "monthly"
