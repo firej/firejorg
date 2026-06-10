@@ -3,7 +3,9 @@
 <h1 class="page-title">#{{ .Title }}</h1>
 <div class="post-feed">
   {{ range .Paginator.Pages }}
-    {{ $size := .Params.size | default "S" }}
+    {{- $size := "S" -}}
+    {{- if .Params.featured_image }}{{- $size = "L" -}}{{ end -}}
+    {{- if .Params.size }}{{- $size = .Params.size -}}{{ end -}}
     {{ if eq $size "L" }}
       {{ partial "card-l.html" . }}
     {{ else if eq $size "M" }}

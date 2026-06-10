@@ -10,20 +10,6 @@
     <h1>{{ .Title }}</h1>
   </header>
 
-  {{- /* Cover image */ -}}
-  {{ with .Params.featured_image }}
-    {{ $res := $.Resources.GetMatch . }}
-    {{ if $res }}
-    <div class="post-cover">
-      <img src="{{ $res.RelPermalink }}" alt="{{ $.Title }}">
-    </div>
-    {{ else }}
-    <div class="post-cover">
-      <img src="{{ . | absURL }}" alt="{{ $.Title }}">
-    </div>
-    {{ end }}
-  {{ end }}
-
   <div class="post-body">
     {{ .Content }}
   </div>
