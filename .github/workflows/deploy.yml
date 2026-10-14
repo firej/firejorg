@@ -54,14 +54,12 @@ jobs:
             BatchMode yes
             StrictHostKeyChecking yes
             ConnectTimeout 15
+            ConnectionAttempts 3
           SSH
           if ! ssh firej.org 'test -d /opt/www/firejorg/public && test -w /opt/www/firejorg/public' 2> /tmp/deploy-ssh-error; then
             while IFS= read -r line; do
               printf '::error::%s\n' "$line"
             done < /tmp/deploy-ssh-error
-            # Only the public key is exposed, to allow provisioning a replacement server.
-            deploy_public_key=$(ssh-keygen -y -f ~/.ssh/deploy_key)
-            printf '::notice title=Deployment SSH public key::%s\n' "$deploy_public_key"
             exit 1
           fi
 
