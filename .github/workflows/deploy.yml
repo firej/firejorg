@@ -18,7 +18,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
 
     steps:
@@ -55,7 +55,12 @@ jobs:
             StrictHostKeyChecking yes
             ConnectTimeout 15
           SSH
-          ssh firej.org 'test -d /opt/www/firejorg/public && test -w /opt/www/firejorg/public'
+          if ! ssh firej.org 'test -d /opt/www/firejorg/public && test -w /opt/www/firejorg/public' 2> /tmp/deploy-ssh-error; then
+            while IFS= read -r line; do
+              printf '::error::%s\n' "$line"
+            done < /tmp/deploy-ssh-error
+            exit 1
+          fi
 
       - name: Deploy to server
         run: |
