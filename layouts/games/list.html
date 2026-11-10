@@ -1,0 +1,32 @@
+{{ define "main" }}
+<section class="games-page" aria-labelledby="games-title">
+  <header class="post-header">
+    <div class="section-label">Можно немного отвлечься</div>
+    <h1 id="games-title">{{ .Title }}</h1>
+    <p class="games-intro">Два классических пасьянса. Без рекламы и регистрации — просто выбирайте и играйте.</p>
+  </header>
+
+  <div class="games-list">
+    <a class="card game-card" href="{{ "games/klondike/" | relURL }}?lang=ru">
+      <img src="{{ "games/icon-kosynka.svg" | relURL }}" alt="" width="120" height="120">
+      <div>
+        <span class="kicker">Классический пасьянс</span>
+        <h2>Косынка</h2>
+        <p>Соберите четыре масти от туза до короля, чередуя красные и чёрные карты на столе.</p>
+        <span class="game-play">Играть <span aria-hidden="true">→</span></span>
+      </div>
+    </a>
+    <a class="card game-card" href="{{ "games/spider/" | relURL }}?lang=ru">
+      <img src="{{ "games/icon-spider.svg" | relURL }}" alt="" width="120" height="120">
+      <div>
+        <span class="kicker">1, 2 или 4 масти</span>
+        <h2>Паук</h2>
+        <p>Соберите восемь последовательностей от короля до туза. Начните с одной масти или усложните задачу.</p>
+        <span class="game-play">Играть <span aria-hidden="true">→</span></span>
+      </div>
+    </a>
+  </div>
+
+  <p class="games-note">В обеих играх есть подсказки, отмена хода и повтор расклада. Партия сохраняется в этом браузере — можно закрыть страницу и продолжить позже.</p>
+</section>
+{{ end }}

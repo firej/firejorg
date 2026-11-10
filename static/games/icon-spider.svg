@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 160 160">
+  <defs>
+    <radialGradient id="gfelt" cx="50%" cy="38%" r="80%">
+      <stop offset="0%" stop-color="#2d5a3d"></stop>
+      <stop offset="60%" stop-color="#1a4d2e"></stop>
+      <stop offset="100%" stop-color="#0d2818"></stop>
+    </radialGradient>
+  </defs>
+  <rect width="160" height="160" fill="url(#gfelt)"></rect>
+  <g transform="rotate(-8 80 86)">
+    <rect x="47" y="40" width="66" height="92" rx="7" fill="#faf8f5" stroke="#e8e4df"></rect>
+    <path d="M0,14 L5,0 L10,14 M1.8,9.5 L8.2,9.5" transform="translate(54,46) scale(1.15)" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+  </g>
+  <g stroke="#1a1a1a" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="70,86 52,78 44,64"></polyline>
+    <polyline points="68,91 46,86 34,76"></polyline>
+    <polyline points="68,96 46,100 36,112"></polyline>
+    <polyline points="71,102 56,116 50,130"></polyline>
+    <polyline points="90,84 108,72 118,58"></polyline>
+    <polyline points="92,90 114,84 126,74"></polyline>
+    <polyline points="92,96 114,100 124,112"></polyline>
+    <polyline points="89,102 104,116 110,130"></polyline>
+  </g>
+  <circle cx="80" cy="94" r="13" fill="#1a1a1a"></circle>
+  <circle cx="80" cy="77" r="7" fill="#1a1a1a"></circle>
+  <path d="M50,12 C32,32 18,42 18,56 C18,66 26,73 35,73 C40,73 45,70.5 48,67 C46,76 43,82 37,88 L63,88 C57,82 54,76 52,67 C55,70.5 60,73 65,73 C74,73 82,66 82,56 C82,42 68,32 50,12 Z" transform="translate(75.2,89.2) scale(0.096)" fill="#faf8f5"></path>
+</svg>

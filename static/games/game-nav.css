@@ -1,0 +1,10 @@
+.game-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+  font: 12px/1.5 "JetBrains Mono", monospace;
+}
+.game-nav a { color: #e5ddc9; text-decoration: none; padding: 4px 0; }
+.game-nav a:hover { color: #fff; text-decoration: underline; }
+.game-nav a:focus-visible { outline: 2px solid #d4af37; outline-offset: 4px; }

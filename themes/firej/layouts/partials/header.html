@@ -16,6 +16,7 @@
       <nav>
         <a href="{{ "/" | absURL }}"{{ if .IsHome }} class="active"{{ end }}>записи</a>
         <a href="{{ "/tags/" | absURL }}"{{ if eq .RelPermalink "/tags/" }} class="active"{{ end }}>теги</a>
+        <a href="{{ "/games/" | absURL }}"{{ if eq .Section "games" }} class="active" aria-current="page"{{ end }}>игры</a>
         {{- with .Site.GetPage "/about" }}
         <a href="{{ .Permalink }}"{{ if eq $.RelPermalink .RelPermalink }} class="active"{{ end }}>об авторе</a>
         {{- end }}

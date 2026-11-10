@@ -820,3 +820,44 @@ a.pager:hover {
   .post-back,
   body { transition: none; }
 }
+
+/* ---- games ---- */
+.games-intro {
+  margin-top: 18px;
+  max-width: 550px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.games-list { display: grid; gap: 20px; }
+.game-card {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  align-items: center;
+  gap: 26px;
+  padding: 26px;
+  background: var(--card);
+  border-radius: 20px;
+}
+.game-card img { width: 100%; height: auto; border-radius: 16px; }
+.game-card h2 {
+  margin: 8px 0 10px;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.game-card p { font-size: 15px; line-height: 1.6; }
+.game-play { display: inline-block; margin-top: 16px; font-weight: 600; color: var(--terra); }
+.game-card:focus-visible { outline: 3px solid var(--terra); outline-offset: 4px; }
+.games-note { margin: 26px 0 0; font-size: 14px; line-height: 1.7; color: var(--soft); }
+
+@media (max-width: 640px) {
+  .site-header .container { height: auto; min-height: 70px; flex-wrap: wrap; gap: 14px; padding-top: 14px; padding-bottom: 14px; }
+  .site-logo-sub { display: none; }
+  .site-nav { gap: 12px; }
+  .site-nav nav { display: flex; gap: 14px; }
+  .game-card { grid-template-columns: 72px minmax(0, 1fr); align-items: start; gap: 18px; padding: 20px; }
+  .game-card h2 { font-size: 26px; }
+  .game-card .kicker { font-size: 9px; letter-spacing: 0.08em; }
+  .games-intro { font-size: 16px; }
+}

@@ -1,0 +1,632 @@
+:root {
+  --felt: #1a4d2e;
+  --felt-shadow: #0d2818;
+  --card-bg: #faf8f5;
+  --card-border: #e8e4df;
+  --card-shadow: rgba(0, 0, 0, 0.25);
+  --red-suit: #b22222;
+  --black-suit: #1a1a1a;
+  --placeholder: rgba(255, 255, 255, 0.08);
+  --placeholder-border: rgba(255, 255, 255, 0.2);
+  --btn-bg: rgba(255, 255, 255, 0.15);
+  --btn-hover: rgba(255, 255, 255, 0.25);
+  --gold: #d4af37;
+  /* Размер карт адаптивный: ширина подбирается так, чтобы 10 столбцов помещались
+     по ширине экрана, но не превышала 90px (десктоп). Высота = ширина × 1.4. */
+  --card-gap: 0.6rem;
+  --card-width: min(90px, calc((100vw - 4.5rem - 9 * var(--card-gap)) / 10));
+  --card-height: calc(var(--card-width) * 1.4);
+  /* Интервалы стопки: открытым картам нужен номинал целиком, рубашки ужимаем сильнее.
+     Точные значения пересчитывает JS (adjustOverlaps) под высоту поля. */
+  --tableau-overlap: 30px;
+  --tableau-overlap-back: 14px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background: linear-gradient(160deg, #0d2818 0%, #1a4d2e 40%, #2d5a3d 100%);
+  color: #f5f0e8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  /* Требование платформы 1.6.2.7: клики и перетаскивания по полю
+     не должны выделять текст/элементы игры. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game-container {
+  position: relative;
+  width: min(1080px, 95vw);
+  max-width: 1080px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.game-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--gold);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.controls {
+  flex-wrap: wrap;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  padding: 0.45rem 0.9rem;
+  background: var(--btn-bg);
+  border: 1px solid var(--placeholder-border);
+  border-radius: 6px;
+  color: #f5f0e8;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--btn-hover);
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Селектор сложности (количество мастей) в стиле кнопок */
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 1.6rem;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23f5f0e8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+}
+
+.select option {
+  color: #1a1a1a;
+  background: #faf8f5;
+}
+
+.moves-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+/* Game board = felt table */
+.game-board {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--felt);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow:
+    inset 0 0 80px rgba(0, 0, 0, 0.3),
+    0 8px 32px var(--felt-shadow),
+    0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.stock-area {
+  display: flex;
+  gap: var(--card-gap);
+}
+
+.foundations {
+  display: flex;
+  gap: var(--card-gap);
+}
+
+/* Tableau */
+.tableau {
+  flex: 1;
+  display: flex;
+  gap: var(--card-gap);
+  min-height: 140px;
+}
+
+.tableau-column {
+  flex: 1;
+  min-width: 0;
+  min-height: 120px;
+  border-radius: 8px;
+  position: relative;
+}
+
+/* Пустой столбец: видимое место под карту (в «Пауке» это рабочая ячейка) */
+.tableau-column::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--card-width);
+  height: var(--card-height);
+  border: 2px dashed var(--placeholder-border);
+  border-radius: 8px;
+  background: var(--placeholder);
+  pointer-events: none;
+}
+
+.tableau-column:has(.card)::before {
+  display: none;
+}
+
+/* Подсветка пустых столбцов, когда раздача из колоды запрещена */
+.tableau-column.flash::before {
+  animation: flashPulse 0.45s ease 2;
+}
+
+@keyframes flashPulse {
+  0%, 100% { border-color: var(--placeholder-border); box-shadow: none; }
+  50% { border-color: var(--gold); box-shadow: 0 0 14px 3px rgba(212, 175, 55, 0.6); }
+}
+
+/* Pile = area where cards sit */
+.pile {
+  min-width: var(--card-width);
+  min-height: var(--card-height);
+  border-radius: 10px;
+  position: relative;
+}
+
+.stock-pile,
+.foundation-pile {
+  width: var(--card-width);
+  height: var(--card-height);
+}
+
+/* Placeholder (empty pile) */
+.card-placeholder,
+.pile::before {
+  position: absolute;
+  inset: 0;
+  border: 2px dashed var(--placeholder-border);
+  border-radius: 8px;
+  background: var(--placeholder);
+  content: '';
+  pointer-events: none;
+}
+
+.pile:has(.card)::before {
+  display: none;
+}
+
+.stock-pile {
+  position: relative;
+}
+
+/* Колода: рубашки лежат с небольшим сдвигом — по одной на каждую оставшуюся раздачу */
+.stock-pile .card {
+  top: 0;
+  cursor: pointer;
+}
+
+.stock-pile .card-placeholder {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.stock-pile .card-placeholder:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(212, 175, 55, 0.5);
+}
+
+/* Cards */
+.card {
+  position: absolute;
+  width: var(--card-width);
+  height: var(--card-height);
+  background: var(--card-bg);
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 2px 8px var(--card-shadow);
+  cursor: grab;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 9px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  user-select: none;
+  touch-action: none;
+}
+
+.card:active {
+  cursor: grabbing;
+}
+
+.card:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(212, 175, 55, 0.5);
+}
+
+.card.red {
+  color: var(--red-suit);
+}
+
+.card.black {
+  color: var(--black-suit);
+}
+
+.card.back {
+  background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
+  color: transparent;
+  border-color: #1a365d;
+}
+
+.card.back .card-value,
+.card.back .card-suit,
+.card.back .card-center {
+  display: none;
+}
+
+.card.back::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(255,255,255,0.03) 4px,
+    rgba(255,255,255,0.03) 8px
+  );
+}
+
+.card-value {
+  line-height: 1;
+}
+
+.card-value.bottom {
+  align-self: flex-end;
+  transform: rotate(180deg);
+}
+
+.card-center {
+  align-self: center;
+  font-size: 2.25rem;
+  line-height: 1;
+}
+
+.card.dragging {
+  opacity: 0.9;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* Без подъёма z-index: подсказка часто указывает на карту в глубине длинной
+   последовательности, и поднятая карта закрывала бы лежащие на ней. */
+.card.hint {
+  animation: hintPulse 1.1s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px var(--gold), 0 0 12px 2px rgba(212, 175, 55, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 3px var(--gold), 0 0 22px 7px rgba(212, 175, 55, 0.85);
+  }
+}
+
+.stock-pile .card-placeholder.hint {
+  animation: stockHintPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes stockHintPulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.55), 0 0 10px 2px rgba(212, 175, 55, 0.25); }
+  50% { box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.75), 0 0 15px 3px rgba(212, 175, 55, 0.4); }
+}
+
+/* Tableau card stacking (offset) */
+.tableau-column .card {
+  position: relative;
+  margin-bottom: calc(var(--card-height) * -1 + var(--tableau-overlap));
+  top: 0;
+  left: 0;
+}
+
+/* Рубашки в столбце лежат плотнее открытых карт */
+.tableau-column .card.back {
+  margin-bottom: calc(var(--card-height) * -1 + var(--tableau-overlap-back));
+}
+
+.tableau-column .card:last-child {
+  margin-bottom: 0;
+}
+
+/* Foundation: all cards stack in the same spot */
+.foundation-pile {
+  position: relative;
+}
+
+.foundation-pile .card {
+  margin: 0;
+  top: 0;
+  left: 0;
+  cursor: default;
+}
+
+/* Одна тень от собранной стопки, без наложения теней всех 13 карт. */
+.foundation-pile .card:not(:last-child) {
+  box-shadow: none;
+}
+
+/* Win overlay */
+.win-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+.win-overlay.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.win-modal {
+  background: linear-gradient(180deg, #2d5a3d 0%, #1a4d2e 100%);
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.win-modal h2 {
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.win-modal p {
+  margin-bottom: 1.25rem;
+  opacity: 0.95;
+}
+
+/* Итог партии и статистика в окне победы */
+.win-modal .win-result {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.win-modal .win-stats {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  opacity: 0.75;
+  margin-bottom: 1rem;
+}
+
+.win-modal .win-result:empty,
+.win-modal .win-stats:empty {
+  display: none;
+}
+
+/* Таблица рекордов в окне победы */
+.win-lb {
+  margin-bottom: 1rem;
+}
+
+.win-lb.hidden {
+  display: none;
+}
+
+.win-lb h3 {
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.win-lb ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+}
+
+.win-lb li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.14rem 0;
+}
+
+.win-lb li.me {
+  color: var(--gold);
+}
+
+.win-lb .lb-name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 16ch;
+}
+
+#lb-login {
+  margin-bottom: 0.75rem;
+}
+
+#lb-login.hidden {
+  display: none;
+}
+
+/* Кнопка-иконка (звук) */
+.btn-icon {
+  padding: 0.45rem 0.55rem;
+  line-height: 1;
+}
+
+/* ===== Адаптив под мобильные ===== */
+
+/* Телефоны, портретная ориентация: на весь экран, размер карт — от ширины. */
+@media (max-width: 600px) {
+  body { padding: 0; }
+  .game-container { width: 100vw; height: 100dvh; }
+
+  .game-board {
+    padding: 6px;
+    border-radius: 0;
+    --card-gap: 3px;
+    --card-width: calc((100vw - 12px - 9 * var(--card-gap)) / 10);
+    --card-height: calc(var(--card-width) * 1.4);
+    --tableau-overlap: max(14px, calc(var(--card-height) * 0.3));
+    --tableau-overlap-back: max(7px, calc(var(--card-height) * 0.14));
+  }
+
+  .game-header {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.3rem 0.5rem 0.5rem;
+    padding: 0;
+  }
+  .game-header h1 { font-size: 1.1rem; }
+  .controls { gap: 0.4rem; flex-wrap: wrap; }
+  .btn { font-size: 0.7rem; padding: 0.35rem 0.55rem; }
+  .select { padding-right: 1.2rem; background-position: right 0.4rem center; }
+  .moves-counter { font-size: 0.7rem; }
+
+  .top-row { margin-bottom: 0.6rem; }
+  .tableau { min-height: 0; }
+
+  .card {
+    padding: 2px 3px;
+    border-radius: 5px;
+    font-size: calc(var(--card-width) * 0.32);
+  }
+  .card-center { font-size: calc(var(--card-width) * 0.55); }
+}
+
+/* Телефоны, ландшафт (низкий экран): размер карт — от высоты, столбцы по ширине карты. */
+@media (orientation: landscape) and (max-height: 520px) {
+  body { padding: 0; }
+  .game-container { width: 100vw; height: 100dvh; }
+
+  .game-board {
+    padding: 4px 8px;
+    border-radius: 0;
+    --card-gap: 4px;
+    --card-height: 19vh;
+    --card-width: calc(var(--card-height) / 1.4);
+    --tableau-overlap: max(14px, calc(var(--card-height) * 0.24));
+    --tableau-overlap-back: max(7px, calc(var(--card-height) * 0.12));
+  }
+
+  .tableau-column { flex: 0 0 var(--card-width); }
+  /* Поле шириной ровно 10 столбцов, по центру — чтобы дома были над правыми столбцами. */
+  .top-row, .tableau {
+    width: calc(10 * var(--card-width) + 9 * var(--card-gap));
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .game-header { flex-wrap: wrap; gap: 0.3rem; margin: 0.2rem 0.5rem 0.35rem; padding: 0; }
+  .game-header h1 { font-size: 1rem; }
+  .controls { gap: 0.3rem; }
+  .btn { font-size: 0.68rem; padding: 0.3rem 0.5rem; }
+  .select { padding-right: 1.2rem; background-position: right 0.4rem center; }
+  .moves-counter { font-size: 0.68rem; }
+  .top-row { margin-bottom: 0.4rem; }
+
+  .card { padding: 2px 3px; border-radius: 5px; font-size: calc(var(--card-width) * 0.32); }
+  .card-center { font-size: calc(var(--card-width) * 0.5); }
+}
+
+/* Source and destination stay visible until the next move. */
+/* Destination glow follows the top card, never the full column. */
+.hint-target > .card:last-child,
+.hint-target:not(:has(.card))::before {
+  box-shadow:
+    0 0 0 2px #c5fff1,
+    0 0 0 4px rgba(65, 225, 193, 0.7),
+    0 0 16px 5px rgba(65, 225, 193, 0.65),
+    0 0 30px 8px rgba(65, 225, 193, 0.25);
+}
+
+.hint-target:not(:has(.card))::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: var(--card-width);
+  height: var(--card-height);
+  border: 2px solid #c5fff1;
+  border-radius: 8px;
+  background: rgba(65, 225, 193, 0.2);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.hint {
+    animation: none;
+    box-shadow: 0 0 0 3px var(--gold), 0 0 12px 2px rgba(212, 175, 55, 0.45);
+  }
+  .stock-pile .card-placeholder.hint {
+    animation: none;
+    box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.6), 0 0 12px 2px rgba(212, 175, 55, 0.3);
+  }
+}
+.hint-message { min-height: 1.4em; margin: 0 0 12px; text-align: center; color: #ffe49a; font-size: 0.85rem; }
+
+#auto-collect.hidden { display: none; }

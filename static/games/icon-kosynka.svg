@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 160 160">
+  <defs>
+    <radialGradient id="gfelt" cx="50%" cy="38%" r="80%">
+      <stop offset="0%" stop-color="#2d5a3d"></stop>
+      <stop offset="60%" stop-color="#1a4d2e"></stop>
+      <stop offset="100%" stop-color="#0d2818"></stop>
+    </radialGradient>
+  </defs>
+  <rect width="160" height="160" fill="url(#gfelt)"></rect>
+  <g transform="rotate(-16 80 150)">
+    <rect x="49" y="42" width="62" height="88" rx="7" fill="#e9e4dc" stroke="#d8d2c8"></rect>
+  </g>
+  <g transform="rotate(16 80 150)">
+    <rect x="49" y="42" width="62" height="88" rx="7" fill="#e9e4dc" stroke="#d8d2c8"></rect>
+  </g>
+  <rect x="49" y="38" width="62" height="90" rx="7" fill="#faf8f5" stroke="#e8e4df"></rect>
+  <path d="M0,14 L5,0 L10,14 M1.8,9.5 L8.2,9.5" transform="translate(56,45)" fill="none" stroke="#b22222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M50,32 C50,22 42,14 32,14 C20,14 12,23 12,34 C12,52 30,62 50,82 C70,62 88,52 88,34 C88,23 80,14 68,14 C58,14 50,22 50,32 Z" transform="translate(56.4,62) scale(0.1)" fill="#b22222"></path>
+  <path d="M50,32 C50,22 42,14 32,14 C20,14 12,23 12,34 C12,52 30,62 50,82 C70,62 88,52 88,34 C88,23 80,14 68,14 C58,14 50,22 50,32 Z" transform="translate(52,59) scale(0.56)" fill="#b22222"></path>
+</svg>

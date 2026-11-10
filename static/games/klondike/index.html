@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пасьянс "Косынка" от firej</title>
+  <link rel="stylesheet" href="fonts.css?v=63b7ba5d0396">
+  <link rel="stylesheet" href="styles.css?v=b526e3e1f6f5">
+  <link rel="stylesheet" href="cards.css?v=2dd03324fb94">
+  <style>body.loading .game-container { visibility: hidden; }</style>
+  <script>
+    // Блокируем действия браузера до загрузки игровой логики.
+    ['contextmenu', 'selectstart', 'dragstart'].forEach(function (type) {
+      document.addEventListener(type, function (event) { event.preventDefault(); }, true);
+    });
+  </script>
+  <meta name="description" content="Пасьянс «Косынка» от firej. Играйте в браузере бесплатно, без рекламы и регистрации.">
+  <link rel="canonical" href="https://firej.org/games/klondike/">
+  <link rel="stylesheet" href="../game-nav.css">
+</head>
+<body class="loading">
+  <div class="game-container">
+    <nav class="game-nav" aria-label="Навигация"><a href="../">← все игры</a><a href="/">firej.org</a></nav>
+    <header class="game-header">
+      <h1 data-i18n="heading">Пасьянс "Косынка" от firej</h1>
+      <div class="controls">
+        <button type="button" id="new-game" class="btn" data-i18n="newGame">Новая игра</button>
+        <button type="button" id="replay" class="btn" data-i18n="replay">Повторить расклад</button>
+        <button type="button" id="undo" class="btn" data-i18n="undo" disabled>Отменить</button>
+        <button type="button" id="hint" class="btn"><span data-i18n="hint">Подсказка</span></button>
+        <button type="button" id="auto-collect" class="btn hidden" data-i18n="autoCollect">Собрать автоматически</button>
+        <button type="button" id="sound" class="btn btn-icon" aria-label="Звук">🔊</button>
+        <span class="moves-counter"><span data-i18n="movesLabel">Ходов:</span> <span id="moves">0</span></span>
+        <span class="moves-counter"><span data-i18n="scoreLabel">Очки:</span> <span id="score">0</span></span>
+        <span class="moves-counter" id="timer">0:00</span>
+      </div>
+    </header>
+
+    <p id="hint-message" class="hint-message" role="status" aria-live="polite"></p>
+    <main class="game-board">
+      <div class="top-row">
+        <div class="stock-area">
+          <div id="stock" class="pile stock-pile" data-pile="stock">
+            <div class="card-placeholder"></div>
+          </div>
+          <div id="waste" class="pile waste-pile" data-pile="waste"></div>
+        </div>
+        <div id="foundations" class="foundations">
+        <div id="foundation-0" class="pile foundation-pile" data-pile="foundation-0"></div>
+        <div id="foundation-1" class="pile foundation-pile" data-pile="foundation-1"></div>
+        <div id="foundation-2" class="pile foundation-pile" data-pile="foundation-2"></div>
+        <div id="foundation-3" class="pile foundation-pile" data-pile="foundation-3"></div>
+        </div>
+      </div>
+      <div id="tableau" class="tableau">
+        <div id="tableau-0" class="tableau-column" data-pile="tableau-0"></div>
+        <div id="tableau-1" class="tableau-column" data-pile="tableau-1"></div>
+        <div id="tableau-2" class="tableau-column" data-pile="tableau-2"></div>
+        <div id="tableau-3" class="tableau-column" data-pile="tableau-3"></div>
+        <div id="tableau-4" class="tableau-column" data-pile="tableau-4"></div>
+        <div id="tableau-5" class="tableau-column" data-pile="tableau-5"></div>
+        <div id="tableau-6" class="tableau-column" data-pile="tableau-6"></div>
+      </div>
+    </main>
+
+    <div id="win-overlay" class="win-overlay hidden">
+      <div class="win-modal">
+        <h2 data-i18n="winTitle">Поздравляем!</h2>
+        <p data-i18n="winText">Пасьянс разложен.</p>
+        <p id="win-result" class="win-result"></p>
+        <p id="win-stats" class="win-stats"></p>
+        <div id="win-lb" class="win-lb hidden">
+          <h3 data-i18n="lbTitle">Таблица рекордов</h3>
+          <ol id="lb-list"></ol>
+        </div>
+        <button type="button" id="lb-login" class="btn hidden" data-i18n="lbLogin">Войдите, чтобы попасть в таблицу</button>
+        <button type="button" id="replay-win" class="btn" data-i18n="replay">Повторить расклад</button>
+        <button type="button" id="play-again" class="btn" data-i18n="playAgain">Играть снова</button>
+      </div>
+    </div>
+  </div>
+  <noscript>Для игры включите JavaScript в браузере.</noscript>
+  <script src="game.js?v=0effb393cfb2"></script>
+</body>
+</html>
